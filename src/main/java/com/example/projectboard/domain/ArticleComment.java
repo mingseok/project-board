@@ -2,6 +2,9 @@ package com.example.projectboard.domain;
 
 import java.time.LocalDateTime;
 
+/**
+ * 댓글
+ */
 public class ArticleComment {
 
     private Long id;
