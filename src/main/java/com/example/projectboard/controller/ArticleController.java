@@ -16,6 +16,4 @@ public class ArticleController {
         map.addAttribute("articles", List.of());
         return "articles/index";
     }
-
-
 }
