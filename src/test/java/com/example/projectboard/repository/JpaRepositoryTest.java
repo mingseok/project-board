@@ -27,7 +27,7 @@ class JpaRepositoryTest {
     }
 
     @Test
-    void name() {
+    void test() {
         List<Article> articles = articleRepository.findAll();
         assertThat(articles).isNotNull().hasSize(0);
     }
