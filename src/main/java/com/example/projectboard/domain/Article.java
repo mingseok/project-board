@@ -3,15 +3,13 @@ package com.example.projectboard.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-/**
- * 게시글
- */
 @Getter
 @ToString
 @Table(indexes = {
@@ -42,8 +40,6 @@ public class Article extends AuditingFields {
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
-
-
     protected Article() {
     }
 
@@ -62,7 +58,7 @@ public class Article extends AuditingFields {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Article article = (Article) o;
-        return id != null && id.equals(article.id);
+        return id != null && id.equals(article.id); // 추가 코드: id != null
     }
 
     @Override

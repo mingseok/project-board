@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 
 @Getter
 @ToString
-@MappedSuperclass
+@MappedSuperclass // 핵심
 @EntityListeners(AuditingEntityListener.class)
 public class AuditingFields {
 

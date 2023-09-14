@@ -3,13 +3,11 @@ package com.example.projectboard.domain;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.util.Objects;
 
-/**
- * 댓글
- */
 @Getter
 @ToString
 @Table(indexes = {
@@ -30,8 +28,6 @@ public class ArticleComment extends AuditingFields{
     @Setter
     @Column(nullable = false, length = 500)
     private String content; // 내용
-
-
 
     protected ArticleComment() {
     }
