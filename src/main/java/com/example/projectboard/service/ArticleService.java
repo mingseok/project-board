@@ -36,6 +36,9 @@ public class ArticleService {
 
     }
 
+    /**
+     * 단건 조회
+     */
     @Transactional(readOnly = true)
     public ArticleWithCommentsDto getArticle(Long articleId) {
         return null;

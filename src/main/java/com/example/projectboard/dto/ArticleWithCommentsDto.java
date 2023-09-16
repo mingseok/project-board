@@ -8,6 +8,9 @@ import java.util.stream.Collectors;
 
 import java.util.LinkedHashSet;
 
+/**
+ * DTO가 게시글이랑 댓글까지 다 가지고 있는것
+ */
 public record ArticleWithCommentsDto(Long id,
                                      UserAccountDto userAccountDto,
                                      Set<ArticleCommentDto> articleCommentDtos,
