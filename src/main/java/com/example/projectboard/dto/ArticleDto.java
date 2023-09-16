@@ -4,6 +4,11 @@ import com.example.projectboard.domain.Article;
 
 import java.time.LocalDateTime;
 
+/**
+ * record는 게터, 세터를 알아서 만들어주고
+ * 다른 클래스에서 불러 사용할때도, 게터,세터를 생략해서 보여준다
+ * 즉, 'getId' -> 'id' 로만 출력됨 (생략)
+ */
 public record ArticleDto(Long id,
                          UserAccountDto userAccountDto,
                          String title,
