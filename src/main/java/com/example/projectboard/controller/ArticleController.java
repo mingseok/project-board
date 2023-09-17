@@ -25,6 +25,8 @@ public class ArticleController {
     @GetMapping
     public String articles(@RequestParam(required = false) SearchTtype searchTtype,
                            @RequestParam(required = false) String searchValue,
+
+                           // 10개 1페이지, 시간 내림차순
                            @PageableDefault(size = 10, sort = "createAt",
                                    direction = Sort.Direction.DESC) Pageable pageable,
                            ModelMap map) {
