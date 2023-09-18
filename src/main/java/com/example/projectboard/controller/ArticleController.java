@@ -32,15 +32,11 @@ public class ArticleController {
                            @RequestParam(required = false) String searchValue,
 
                            // 10개 1페이지, 시간 내림차순
-                           @PageableDefault(size = 10, sort = "createdAt",
-                                   direction = Sort.Direction.DESC) Pageable pageable,
+                           @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                            ModelMap map) {
 
-        Page<ArticleResponse> article = articleService.
-                searchArticles(searchTtype, searchValue, pageable)
-                .map(ArticleResponse::from);
-        List<Integer> barNumbers = paginationService
-                .getPaginationBarNumbers(pageable.getPageNumber(), article.getTotalPages());
+        Page<ArticleResponse> article = articleService.searchArticles(searchTtype, searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), article.getTotalPages());
 
         map.addAttribute("articles", article);
         map.addAttribute("paginationBarNumbers", barNumbers);
@@ -59,5 +55,22 @@ public class ArticleController {
         map.addAttribute("articleComments", article.articleCommentsResponse());
 
         return "articles/detail";
+    }
+
+    @GetMapping("/search-hashtag")
+    public String searchHashtag(@RequestParam(required = false) String searchValue,
+                                @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+                                ModelMap map) {
+
+        Page<ArticleResponse> article = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), article.getTotalPages());
+        List<String> hashtags = articleService.getHashtags();
+
+        map.addAttribute("articles", article);
+        map.addAttribute("hashtags", hashtags);
+        map.addAttribute("paginationBarNumbers", barNumbers);
+//        map.addAttribute("searchTypes", SearchTtype.values());
+
+        return "articles/search-hashtag";
     }
 }
