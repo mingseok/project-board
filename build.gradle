@@ -40,7 +40,6 @@ dependencies {
 	testImplementation 'org.springframework.security:spring-security-test'
 	annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
-
 	// queryDSL 설정
 	implementation "com.querydsl:querydsl-jpa"
 	implementation "com.querydsl:querydsl-core"
