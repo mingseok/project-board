@@ -1,7 +1,7 @@
 package com.example.projectboard.service;
 
 import com.example.projectboard.domain.Article;
-import com.example.projectboard.domain.type.SearchTtype;
+import com.example.projectboard.domain.type.SearchType;
 import com.example.projectboard.dto.ArticleDto;
 import com.example.projectboard.dto.ArticleWithCommentsDto;
 import com.example.projectboard.repository.ArticleRepository;
@@ -24,7 +24,7 @@ public class ArticleService {
     private final ArticleRepository articleRepository;
 
     @Transactional(readOnly = true)
-    public Page<ArticleDto> searchArticles(SearchTtype searchTtype,
+    public Page<ArticleDto> searchArticles(SearchType searchType,
                                            String searchKeyword,
                                            Pageable pageable) {
 
@@ -32,7 +32,7 @@ public class ArticleService {
             return articleRepository.findAll(pageable).map(ArticleDto::from);
         }
 
-        return switch (searchTtype) {
+        return switch (searchType) {
             case TITLE -> articleRepository.findByTitleContaining(searchKeyword, pageable).map(ArticleDto::from);
             case CONTENT -> articleRepository.findByContentContaining(searchKeyword, pageable).map(ArticleDto::from);
             case ID -> articleRepository.findByUserAccount_UserIdContaining(searchKeyword, pageable).map(ArticleDto::from);

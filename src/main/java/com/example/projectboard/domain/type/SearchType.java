@@ -3,7 +3,7 @@ package com.example.projectboard.domain.type;
 import lombok.Getter;
 
 @Getter
-public enum SearchTtype {
+public enum SearchType {
 
     TITLE("제목"),
     CONTENT("본문"),
@@ -13,7 +13,7 @@ public enum SearchTtype {
 
     private final String description;
 
-    SearchTtype(String description) {
+    SearchType(String description) {
         this.description = description;
     }
 }

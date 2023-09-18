@@ -1,6 +1,6 @@
 package com.example.projectboard.controller;
 
-import com.example.projectboard.domain.type.SearchTtype;
+import com.example.projectboard.domain.type.SearchType;
 import com.example.projectboard.dto.response.ArticleResponse;
 import com.example.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.example.projectboard.service.ArticleService;
@@ -28,19 +28,19 @@ public class ArticleController {
     private final PaginationService paginationService;
 
     @GetMapping
-    public String articles(@RequestParam(required = false) SearchTtype searchTtype,
+    public String articles(@RequestParam(required = false) SearchType SearchType,
                            @RequestParam(required = false) String searchValue,
 
                            // 10개 1페이지, 시간 내림차순
                            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                            ModelMap map) {
 
-        Page<ArticleResponse> article = articleService.searchArticles(searchTtype, searchValue, pageable).map(ArticleResponse::from);
+        Page<ArticleResponse> article = articleService.searchArticles(SearchType, searchValue, pageable).map(ArticleResponse::from);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), article.getTotalPages());
 
         map.addAttribute("articles", article);
         map.addAttribute("paginationBarNumbers", barNumbers);
-        map.addAttribute("searchTypes", SearchTtype.values());
+        map.addAttribute("searchTypes", SearchType.values());
 
         return "articles/index";
     }
