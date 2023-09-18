@@ -8,7 +8,7 @@ import java.util.List;
 
 public class ArticleRepositoryCustomImpl extends QuerydslRepositorySupport implements ArticleRepositoryCustom {
 
-    public ArticleRepositoryCustomImpl(Class<?> domainClass) {
+    public ArticleRepositoryCustomImpl() {
         super(Article.class);
     }
 
@@ -22,4 +22,5 @@ public class ArticleRepositoryCustomImpl extends QuerydslRepositorySupport imple
                 .where(article.hashtag.isNotNull())
                 .fetch();
     }
+
 }
