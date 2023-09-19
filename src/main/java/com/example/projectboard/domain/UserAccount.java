@@ -9,13 +9,13 @@ import java.util.Objects;
 
 @Getter
 @ToString
-@Table(indexes = {
-        @Index(columnList = "userId", unique = true),
-        @Index(columnList = "email", unique = true),
-        @Index(columnList = "createdAt"),
-        @Index(columnList = "createdBy")})
+@Table(indexes = {@Index(columnList = "userId"),
+                  @Index(columnList = "email", unique = true),
+                  @Index(columnList = "createdAt"),
+                  @Index(columnList = "createdBy")})
 @Entity
 public class UserAccount extends AuditingFields {
+
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -39,8 +39,7 @@ public class UserAccount extends AuditingFields {
     private String memo;
 
 
-    protected UserAccount() {
-    }
+    protected UserAccount() {}
 
     private UserAccount(String userId, String userPassword, String email, String nickname, String memo) {
         this.userId = userId;
@@ -57,9 +56,8 @@ public class UserAccount extends AuditingFields {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        UserAccount that = (UserAccount) o;
-        return id != null && Objects.equals(id, that.id);
+        if (!(o instanceof UserAccount userAccount)) return false;
+        return id != null && id.equals(userAccount.id);
     }
 
     @Override

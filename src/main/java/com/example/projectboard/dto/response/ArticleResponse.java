@@ -26,12 +26,12 @@ public record ArticleResponse(Long id,
 
     public static ArticleResponse from(ArticleDto dto) {
         String nickname = dto.userAccountDto().nickname();
+
         if (nickname == null || nickname.isBlank()) {
             nickname = dto.userAccountDto().userId();
         }
 
-        return new ArticleResponse(
-                dto.id(),
+        return new ArticleResponse(dto.id(),
                 dto.title(),
                 dto.content(),
                 dto.hashtag(),

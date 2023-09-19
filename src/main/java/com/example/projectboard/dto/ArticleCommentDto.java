@@ -2,6 +2,7 @@ package com.example.projectboard.dto;
 
 import com.example.projectboard.domain.Article;
 import com.example.projectboard.domain.ArticleComment;
+import com.example.projectboard.domain.UserAccount;
 
 import java.time.LocalDateTime;
 
@@ -14,6 +15,20 @@ public record ArticleCommentDto(Long id,
                                 LocalDateTime modifiedAt,
                                 String modifiedBy) {
 
+    public static ArticleCommentDto of(Long articleId,
+                                       UserAccountDto userAccountDto,
+                                       String content) {
+
+        return new ArticleCommentDto(null,
+                articleId,
+                userAccountDto,
+                content,
+                null,
+                null,
+                null,
+                null);
+    }
+
 
     public static ArticleCommentDto of(Long id,
                                        Long articleId,
@@ -24,8 +39,7 @@ public record ArticleCommentDto(Long id,
                                        LocalDateTime modifiedAt,
                                        String modifiedBy) {
 
-        return new ArticleCommentDto(
-                id,
+        return new ArticleCommentDto(id,
                 articleId,
                 userAccountDto,
                 content,
@@ -36,8 +50,7 @@ public record ArticleCommentDto(Long id,
     }
 
     public static ArticleCommentDto from(ArticleComment entity) {
-        return new ArticleCommentDto(
-                entity.getId(),
+        return new ArticleCommentDto(entity.getId(),
                 entity.getArticle().getId(),
                 UserAccountDto.from(entity.getUserAccount()),
                 entity.getContent(),
@@ -47,8 +60,8 @@ public record ArticleCommentDto(Long id,
                 entity.getModifiedBy());
     }
 
-    public ArticleComment toEntity(Article entity) {
-        return ArticleComment.of(entity, userAccountDto.toEntity(), content);
+    public ArticleComment toEntity(Article article, UserAccount userAccount) {
+        return ArticleComment.of(article, userAccount, content);
     }
 
 }

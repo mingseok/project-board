@@ -2,6 +2,8 @@ package com.example.projectboard.dto;
 
 import java.time.LocalDateTime;
 
+import com.example.projectboard.domain.Hashtag;
+
 public record HashtagDto(
         Long id,
         String hashtagName,
@@ -12,10 +14,21 @@ public record HashtagDto(
 ) {
 
     public static HashtagDto of(String hashtagName) {
-        return new HashtagDto(null, hashtagName, null, null, null, null);
+        return new HashtagDto(null,
+                hashtagName,
+                null,
+                null,
+                null,
+                null);
     }
 
-    public static HashtagDto of(Long id, String hashtagName, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
+    public static HashtagDto of(Long id,
+                                String hashtagName,
+                                LocalDateTime createdAt,
+                                String createdBy,
+                                LocalDateTime modifiedAt,
+                                String modifiedBy) {
+
         return new HashtagDto(id, hashtagName, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 

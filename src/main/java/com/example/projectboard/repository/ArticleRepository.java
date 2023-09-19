@@ -20,10 +20,16 @@ public interface ArticleRepository extends JpaRepository<Article, Long>,
                                            QuerydslBinderCustomizer<QArticle> {
 
     Page<Article> findByTitleContaining(String title, Pageable pageable);
+
     Page<Article> findByContentContaining(String content, Pageable pageable);
+
     Page<Article> findByUserAccount_UserIdContaining(String userId, Pageable pageable);
+
     Page<Article> findByUserAccount_NicknameContaining(String nickname, Pageable pageable);
+
     Page<Article> findByHashtag(String hashtag, Pageable pageable);
+
+    void deleteByIdAndUserAccount_UserId(Long articleId, String userid);
 
     @Override
     default void customize(QuerydslBindings bindings, QArticle root) {
@@ -32,7 +38,11 @@ public interface ArticleRepository extends JpaRepository<Article, Long>,
         bindings.excludeUnlistedProperties(true);
 
         // 원하는 필드 추가
-        bindings.including(root.title, root.content, root.hashtag, root.createdAt, root.createdBy);
+        bindings.including(root.title,
+                root.content,
+                root.hashtag,
+                root.createdAt,
+                root.createdBy);
 
         // ex) "title" 필드에 대한 검색 조건을 설정하는 것 (대소문자 무시)
         bindings.bind(root.title).first(StringExpression::containsIgnoreCase);
