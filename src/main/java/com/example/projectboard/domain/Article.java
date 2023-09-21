@@ -11,10 +11,12 @@ import java.util.Set;
 
 @Getter
 @ToString(callSuper = true)
-@Table(indexes = {@Index(columnList = "title"),
-                  @Index(columnList = "hashtag"),
-                  @Index(columnList = "createdAt"),
-                  @Index(columnList = "createdBy")})
+@Table(indexes = {
+        @Index(columnList = "title"),
+        @Index(columnList = "hashtag"),
+        @Index(columnList = "createdAt"),
+        @Index(columnList = "createdBy")
+})
 @Entity
 public class Article extends AuditingFields {
 
@@ -22,8 +24,8 @@ public class Article extends AuditingFields {
     private Long id;
 
     @Setter
-    @ManyToOne(optional = false)
     @JoinColumn(name = "userId")
+    @ManyToOne(optional = false)
     private UserAccount userAccount; // 유저 정보 (ID)
 
     @Setter
