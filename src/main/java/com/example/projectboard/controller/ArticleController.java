@@ -29,55 +29,37 @@ public class ArticleController {
     private final PaginationService paginationService;
 
     @GetMapping
-    public String articles(@RequestParam(required = false) SearchType SearchType,
+    public String articles(@RequestParam(required = false) SearchType searchType,
                            @RequestParam(required = false) String searchValue,
-                           // 10개 1페이지, 시간 내림차순
-                           @PageableDefault(size = 10, sort = "createdAt",
-                                   direction = Sort.Direction.DESC) Pageable pageable,
-                           ModelMap map) {
+                           @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC)
+                           Pageable pageable, ModelMap map) {
+        Page<ArticleResponse> articles = articleService.searchArticles(searchType, searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
 
-        Page<ArticleResponse> article = articleService
-                .searchArticles(SearchType, searchValue, pageable)
-                .map(ArticleResponse::from);
-
-        List<Integer> barNumbers = paginationService
-                .getPaginationBarNumbers(pageable.getPageNumber(), article.getTotalPages());
-
-        map.addAttribute("articles", article);
+        map.addAttribute("articles", articles);
         map.addAttribute("paginationBarNumbers", barNumbers);
         map.addAttribute("searchTypes", SearchType.values());
 
         return "articles/index";
     }
 
-    /**
-     * 단건
-     */
     @GetMapping("/{articleId}")
     public String article(@PathVariable Long articleId, ModelMap map) {
-
-        ArticleWithCommentsResponse article = ArticleWithCommentsResponse
-                .from(articleService.getArticleWithComments(articleId));
+        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         map.addAttribute("article", article);
         map.addAttribute("articleComments", article.articleCommentsResponse());
+        map.addAttribute("totalCount", articleService.getArticleCount());
 
         return "articles/detail";
     }
 
     @GetMapping("/search-hashtag")
     public String searchArticleHashtag(@RequestParam(required = false) String searchValue,
-                                       @PageableDefault(size = 10, sort = "createdAt",
-                                               direction = Sort.Direction.DESC) Pageable pageable,
+                                       @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
                                        ModelMap map) {
-
-        Page<ArticleResponse> articles = articleService
-                .searchArticlesViaHashtag(searchValue, pageable)
-                .map(ArticleResponse::from);
-
-        List<Integer> barNumbers = paginationService
-                .getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
-
+        Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
         List<String> hashtags = articleService.getHashtags();
 
         map.addAttribute("articles", articles);
@@ -96,9 +78,7 @@ public class ArticleController {
     }
 
     @PostMapping("/form")
-    public String postNewArticle(@AuthenticationPrincipal BoardPrincipal boardPrincipal,
-                                 ArticleRequest articleRequest) {
-
+    public String postNewArticle(@AuthenticationPrincipal BoardPrincipal boardPrincipal, ArticleRequest articleRequest) {
         articleService.saveArticle(articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles";
@@ -118,18 +98,16 @@ public class ArticleController {
     public String updateArticle(@PathVariable Long articleId,
                                 @AuthenticationPrincipal BoardPrincipal boardPrincipal,
                                 ArticleRequest articleRequest) {
-
         articleService.updateArticle(articleId, articleRequest.toDto(boardPrincipal.toDto()));
 
         return "redirect:/articles/" + articleId;
     }
 
     @PostMapping("/{articleId}/delete")
-    public String deleteArticle(@PathVariable Long articleId,
-                                @AuthenticationPrincipal BoardPrincipal boardPrincipal) {
-
+    public String deleteArticle(@PathVariable Long articleId, @AuthenticationPrincipal BoardPrincipal boardPrincipal) {
         articleService.deleteArticle(articleId, boardPrincipal.getUsername());
 
         return "redirect:/articles";
     }
+
 }
